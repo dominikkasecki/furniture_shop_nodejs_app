@@ -1,0 +1,96 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<%- include('../includes/head.ejs'); %>
+
+<body>
+
+
+
+    <%- include('../includes/header.ejs'); %>
+
+
+
+
+    <main id="main">
+        <!-- ======= Our Team Section ======= -->
+        <section class="breadcrumbs">
+            <div class="container">
+                <div class="d-flex justify-content-between align-items-center">
+                    <h2>Meble</h2>
+                    <ol>
+                        <li><a href="/">Strona główna</a></li>
+                        <li>Meble</li>
+                    </ol>
+                </div>
+            </div>
+        </section>
+        <!-- End Our Team Section -->
+
+        <!-- ======= Team Section ======= -->
+        <section id="team" class="team">
+            <div class="container">
+
+                <div class="section-title" data-aos="fade-up">
+                    <h2>Meble najwyższej jakości</h2>
+                    <p>Wykonane z najlepszych materiałów</p>
+                </div>
+
+                <div class="row">
+
+                    <% if(furniture.length > 0) { %>
+
+                    <% let counter = 0; %>
+
+                    <% for(let piece of furniture) { %>
+                    <div class="col-xl-3 col-lg-4 col-md-6" data-aos="fade-up" data-aos-delay="<%= counter %>">
+                        <div class="member">
+                            <img src="<%= piece.images[0] %>" class="img-fluid" alt="">
+                            <div class="member-info">
+                                <div class="member-info-content">
+                                    <h4><%= piece.name %></h4>
+                                    <span><%= piece.price %> $</span>
+                                </div>
+                                <div class="social">
+                                    <a href="/furniture/edit/<%= piece._id %>" class="social__link">
+                                        E<br>
+                                        D<br>
+                                        Y<br>
+                                        T<br>
+                                        U<br>
+                                        J<br>
+                                    </a>
+                                    <a href="/furniture/delete/<%= piece._id %>" class="social__link">
+                                        &#10060;
+
+                                    </a>
+
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <% counter+=100 %>
+                    <%  } %>
+
+                    <%  } else { %>
+                    <h1>Nie dodano żadnych własnych mebli</h1>
+                    <% } %>
+
+
+
+
+
+                </div>
+
+            </div>
+        </section><!-- End Team Section -->
+
+        <!-- End Team Section -->
+    </main>
+
+    <%- include('../includes/scripts.ejs'); %>
+
+</body>
+
+</html>

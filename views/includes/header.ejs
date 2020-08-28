@@ -1,0 +1,38 @@
+<header id="header" class="fixed-top">
+  <div class="container d-flex">
+
+    <div class="logo mr-auto">
+      <h1 class="text-light"><a href="/">Dominik</a></h1>
+      <!-- Uncomment below if you prefer to use an image logo -->
+      <!-- <a href="index.html"><img src="assets/img/logo.png" alt="" class="img-fluid"></a>-->
+    </div>
+
+    <nav class="nav-menu d-none d-lg-block">
+      <ul>
+        <li class="<%= path ==='/'?'active':'' %>"><a href="/">Strona główna</a></li>
+
+        <li class="<%= path ==='/meble'?'active':'' %>"><a href="/meble">Meble</a></li>
+        <% if(!isLoggedIn) { %>
+        <li><a href="/#about">O nas</a></li>
+
+
+        <li><a href="/#contact">Kontakt</a></li>
+        <li class="<%= path ==='/zaloguj'?'active':'' %>"><a href="/zaloguj">Zaloguj</a></li>
+        <li class="<%= path ==='/zarejestruj'?'active':'' %>"><a href="/zarejestruj">Zarejestruj</a></li>
+        <% } else { %>
+        <li class="<%= path ==='/karta'?'active':'' %>"><a href="/karta">Karta</a></li>
+        <li class="<%= path ==='/zamowienia'?'active':'' %>"><a href="/zamowienia">Zamówienia</a></li>
+        <li class="<%= path ==='/dodaj-mebel'?'active':'' %>"><a href="/dodaj-mebel">Dodaj mebel</a></li>
+        <li class="<%= path ==='/moje-meble'?'active':'' %>"><a href="/moje-meble">Zarządzaj meblami</a></li>
+        <li class="<%= path ==='/wyloguj'?'active':'' %>"><a href="/wyloguj">Wyloguj</a></li>
+
+        <% } %>
+
+
+
+
+      </ul>
+    </nav><!-- .nav-menu -->
+
+  </div>
+</header>

@@ -1,0 +1,60 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <%- include('../includes/head.ejs'); %>
+</head>
+
+<body>
+    <%- include('../includes/header.ejs'); %>
+
+    <main class="main">
+
+        <% if(login)  { %>
+        <div class="main__wrapper">
+            <form class="main__form-signin" method="POST" action="/login">
+                <% if(error) { %>
+                <div class="error">
+                    <h1 class="error__message"><%= error %> </h1>
+                </div>
+                <% } %>
+                <h2 class="main__form-signin-heading main__heading">Zaloguj się</h2>
+                <input type="text" class="main__form-control main__input" name="email" value="<%= input.email %>"
+                    placeholder="Wpisz tutaj swój email" required="" autofocus="" />
+                <input type="password" class="main__form-control main__input" name="password"
+                    value="<%= input.password %>" placeholder="Wpisz tutaj swoje hasło" required="" />
+
+                <button class="btn btn-lg btn-primary btn-block main__button" type="submit">Zaloguj się</button>
+            </form>
+        </div>
+        <% } else  { %>
+        <div class="main__wrapper">
+
+            <form class="main__form-signin" method="POST" action="/signup">
+
+                <% if(error) {  %>
+                <div class="error">
+                    <h1 class="error__message"><%= error %> </h1>
+                </div>
+                <% } %>
+                <h2 class="main__form-signin-heading main__heading">Zarejestruj się</h2>
+                <input type="text" class="main__form-control main__input" name="email" value="<%= input.email %>"
+                    placeholder="Wpisz tutaj swój email" required="" autofocus="" />
+                <input type="password" class="main__form-control main__input" name="password"
+                    value="<%= input.password %>" placeholder="Wpisz tutaj swoje hasło" required="" />
+
+                <input type="password" class="main__form-control main__input" name="secondpassword"
+                    value="<%= input.secondpassword %>" placeholder="Wpisz ponownie hasło" required="" />
+
+                <button class="btn btn-lg btn-primary btn-block main__button" type="submit">Zarejestruj się</button>
+            </form>
+        </div>
+        <% } %>
+
+    </main>
+
+    <%- include('../includes/scripts.ejs') %>
+
+</body>
+
+</html>

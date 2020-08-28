@@ -1,0 +1,63 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <%- include('../includes/head.ejs'); %>
+</head>
+
+<body>
+    <%- include('../includes/header.ejs'); %>
+
+    <main class="main main__furniture">
+
+
+
+        <div class="main__wrapper">
+
+            <form class="main__form-signin main__form" method="POST" <% if(edit) { %>
+                action="/furniture/edit/<%= input._id %>" <% } else { %> action="/furniture/add" <% } %>
+                enctype="multipart/form-data">
+
+                <% if(error) {  %>
+                <div class="error">
+                    <h1 class="error__message"><%= error %> </h1>
+                </div>
+                <% } %>
+                <h2 class="main__form-signin-heading main__heading"><%= edit?'Edytuj':'Dodaj' %> mebel</h2>
+                <input type="text" class="main__form-control main__input" name="name" value="<%= input.name %>"
+                    placeholder="Wpisz nazwę mebla" required="" autofocus="" />
+                <input type="text" class="main__form-control main__input" name="category" value="<%= input.category %>"
+                    placeholder="Wpisz kategorię mebla" required="" autofocus="" />
+
+
+
+                <input type="text" class="main__form-control main__input" name="available" required="" autofocus=""
+                    placeholder="Dostępny? TAK lub NIE" value="<%= input.available%>" />
+
+
+
+                <input type="number" class="main__form-control main__input" name="timeOfExecution"
+                    value="<%= input.timeOfExecution %>" placeholder="Czas wykonania (dni)" required="" min="
+                    1" autofocus="" />
+                <input type="number" class="main__form-control main__input" name="price" step="0.01"
+                    value="<%= input.price %>" placeholder="Wpisz cenę mebla" required="" autofocus="" min="1" />
+
+
+                <textarea class="main__form-control main__input main__textarea" name="description"
+                    placeholder="Wpisz opis mebla" rows="4" cols="28" required><%= input.description %></textarea>
+
+                <input class="main__form-control main__input main__textarea" type="file" name="img" multiple />
+
+                <button class="btn btn-lg btn-primary btn-block main__button" type="submit"><%= edit?'Edytuj':'Dodaj' %>
+                    mebel</button>
+            </form>
+        </div>
+
+
+    </main>
+
+    <%- include('../includes/scripts.ejs') %>
+
+</body>
+
+</html>

@@ -1,0 +1,63 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<%- include('../includes/head.ejs'); %>
+
+<body>
+
+
+
+    <%- include('../includes/header.ejs'); %>
+
+    <main class="main">
+        <% if(cartItems.length > 0) { %>
+        <div class="cart__div">
+            <input type="hidden" value="<%= sessionId %>" id="sessionId" />
+
+            <input type="hidden" value="<%= isLoggedIn %>" id="isLoggedIn" />
+
+            <h1 class="cart__h1">Totalna cena <%= Math.round(totalPrice) %> $$</h1>
+            <ul class="cart__list">
+
+
+                <% for(let item of cartItems) { %>
+                <li>
+                    <h5 class="cart__h5"><%= item.furnitureId.name %></h5> &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+                    <h5 class="cart__h5"> <%= item.qty %>
+                        &#10060;
+                        <%= item.furnitureId.price %> $$</h5>
+
+                    <a href="/cart/delete/<%= item.furnitureId._id %>" class="cart__link">Usuń</a>
+
+                </li>
+
+                <% } %>
+            </ul>
+            <h3 class="cart__h1"><a href="#" id="paybtn">Zapłać</a></h3>
+        </div>
+
+
+        <script src="https://js.stripe.com/v3/"></script>
+        <script src="/js/stripe.js"></script>
+        <% } else { %>
+        <div class="cart__div">
+
+
+            <h1 class="cart__h1">Totalna cena 0 $$</h1>
+            <h1 class="cart__h1">Brak przedmiotów w karcie</h1>
+
+        </div>
+
+        <%} %>
+
+
+
+    </main>
+
+    <%- include('../includes/scripts.ejs'); %>
+
+
+
+
+</body>
+<html />

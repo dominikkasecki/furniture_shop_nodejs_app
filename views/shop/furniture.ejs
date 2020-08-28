@@ -1,0 +1,148 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<%- include('../includes/head.ejs'); %>
+
+<body>
+
+
+
+    <%- include('../includes/header.ejs'); %>
+    <link href="https://kit-free.fontawesome.com/releases/latest/css/free.min.css" media="all" rel="stylesheet">
+
+
+
+
+    <main id="main">
+        <!-- ======= Our Team Section ======= -->
+        <section class="breadcrumbs">
+            <div class="container">
+                <div class="d-flex justify-content-between align-items-center">
+                    <h2>Meble</h2>
+                    <ol>
+                        <li><a href="/">Strona główna</a></li>
+                        <li>Meble</li>
+                    </ol>
+                </div>
+            </div>
+        </section>
+        <!-- End Our Team Section -->
+
+        <!-- ======= Team Section ======= -->
+        <section id="team" class="team">
+            <div class="container">
+
+                <div class="section-title" data-aos="fade-up">
+                    <h2>Meble najwyższej jakości</h2>
+                    <p>Wykonane z najlepszych materiałów</p>
+                </div>
+
+                <div class="row">
+
+                    <% if(furniture.length > 0) { %>
+
+                    <% let counter = 0; %>
+
+                    <% for(let piece of furniture) { %>
+                    <div class="col-xl-3 col-lg-4 col-md-6" data-aos="fade-up" data-aos-delay="<%= counter %>">
+                        <div class="member">
+                            <img src="<%= piece.images[0] %>" class="img-fluid" alt="">
+                            <div class="member-info">
+                                <div class="member-info-content">
+                                    <h4><%= piece.name %></h4>
+                                    <span><%= piece.price %> $</span>
+                                </div>
+                                <div class="social">
+                                    <a href="/meble/<%= piece._id %>" class="social__link">
+                                        <i class="fas fa-info social__icon"></i>
+                                    </a>
+
+                                </div>
+                            </div>
+                        </div>
+
+                        <% if(isLoggedIn) { %>
+                        <a href="/cart/add/<%= piece._id %>" class="member__link">Dodaj do karty</a>
+                        <% } %>
+
+                    </div>
+
+                    <% counter+=100 %>
+                    <%  } %>
+
+                    <%  } else { %>
+                    <h1>Nie dodano żadnych mebli</h1>
+                    <% } %>
+
+
+
+                    <!-- 
+                    <div class="col-xl-3 col-lg-4 col-md-6" data-aos="fade-up" data-aos-delay="100">
+                        <div class="member">
+                            <img src="/assets/img/team/team-2.jpg" class="img-fluid" alt="">
+                            <div class="member-info">
+                                <div class="member-info-content">
+                                    <h4>Sarah Jhonson</h4>
+                                    <span>Product Manager</span>
+                                </div>
+                                <div class="social">
+                                    <a href=""><i class="icofont-twitter"></i></a>
+                                    <a href=""><i class="icofont-facebook"></i></a>
+                                    <a href=""><i class="icofont-instagram"></i></a>
+                                    <a href=""><i class="icofont-linkedin"></i></a>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="col-xl-3 col-lg-4 col-md-6" data-aos="fade-up" data-aos-delay="200">
+                        <div class="member">
+                            <img src="/assets/img/team/team-3.jpg" class="img-fluid" alt="">
+                            <div class="member-info">
+                                <div class="member-info-content">
+                                    <h4>William Anderson</h4>
+                                    <span>CTO</span>
+                                </div>
+                                <div class="social">
+                                    <a href=""><i class="icofont-twitter"></i></a>
+                                    <a href=""><i class="icofont-facebook"></i></a>
+                                    <a href=""><i class="icofont-instagram"></i></a>
+                                    <a href=""><i class="icofont-linkedin"></i></a>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="col-xl-3 col-lg-4 col-md-6" data-aos="fade-up" data-aos-delay="300">
+                        <div class="member">
+                            <img src="/assets/img/team/team-4.jpg" class="img-fluid" alt="">
+                            <div class="member-info">
+                                <div class="member-info-content">
+                                    <h4>Amanda Jepson</h4>
+                                    <span>Accountant</span>
+                                </div>
+                                <div class="social">
+                                    <a href=""><i class="icofont-twitter"></i></a>
+                                    <a href=""><i class="icofont-facebook"></i></a>
+                                    <a href=""><i class="icofont-instagram"></i></a>
+                                    <a href=""><i class="icofont-linkedin"></i></a>
+                                </div>
+                            </div>
+                        </div>
+                    </div> -->
+
+                </div>
+
+            </div>
+        </section><!-- End Team Section -->
+
+        <!-- End Team Section -->
+    </main>
+
+    <script src="https://kit.fontawesome.com/ce8e7d3958.js" crossorigin="anonymous"></script>
+    <%- include('../includes/scripts.ejs'); %>
+
+
+</body>
+
+</html>

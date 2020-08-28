@@ -1,0 +1,70 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<%- include('../includes/head.ejs'); %>
+
+<body>
+    <%- include('../includes/header.ejs'); %>
+    <main id="main">
+
+        <!-- ======= Breadcrumbs Section ======= -->
+        <section class="breadcrumbs">
+            <div class="container">
+
+                <div class="d-flex justify-content-between align-items-center">
+                    <h2>Szczegóły mebla</h2>
+                    <ol>
+                        <li><a href="/">Strona główna</a></li>
+                        <li><a href="/meble">Meble</a></li>
+                        <li>Szczegóły mebla</li>
+                    </ol>
+                </div>
+
+            </div>
+        </section><!-- Breadcrumbs Section -->
+
+        <!-- ======= Portfolio Details Section ======= -->
+        <section class="portfolio-details">
+            <div class="container">
+
+                <div class="portfolio-details-container">
+
+                    <div class="owl-carousel portfolio-details-carousel">
+                        <% for(let image of piece.images) { %>
+                        <img src="<%= image %>" class="img-fluid" alt="">
+                        <% } %>
+
+
+                    </div>
+
+                    <div class="portfolio-info">
+                        <h3>Informacje o meblu</h3>
+                        <ul>
+                            <li><strong>Kategoria</strong>: <%= piece.category %></li>
+                            <li><strong>Dostępne</strong>: <%= piece.available?'Tak':'Nie' %></li>
+                            <li><strong>Czas wykonania</strong>: <%= piece.timeOfExecution %> dni</li>
+
+                        </ul>
+                    </div>
+
+                </div>
+
+                <div class="portfolio-description">
+                    <h1><%= piece.price %> $ </h1>
+                    <h2><%= piece.name %></h2>
+                    <p>
+                        <%= piece.description %>
+                    </p>
+                </div>
+            </div>
+        </section>
+
+    </main>
+
+
+
+    <%- include('../includes/scripts.ejs'); %>
+
+</body>
+
+</html>

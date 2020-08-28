@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<%- include('../includes/head.ejs'); %>
+
+<body>
+
+
+
+    <%- include('../includes/header.ejs'); %>
+
+    <main class="main">
+        <% if(orderItems.length > 0) { %>
+        <div class="cart__div">
+
+
+            <h1 class="cart__h1"> Zamówienia naszych klientów </h1>
+            <ul class="cart__list">
+
+
+                <% for(let item of orderItems) { %>
+                <li>
+                    <h5 class="cart__h5"> <a href="/order/<%= item._id %>"><%=  item._id%></a> </h5>
+                    &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+                    <h5 class="cart__h5"> <%= Math.round( item.totalPrice) %> $$ &nbsp; &nbsp; - <%= item.email %></h5>
+
+
+
+                </li>
+
+                <% } %>
+            </ul>
+
+        </div>
+        <% } else { %>
+        <div class="cart__div">
+
+            <h1>Nie ma zamówień jeszcze</h1>
+
+        </div>
+
+        <%} %>
+
+    </main>
+
+    <%- include('../includes/scripts.ejs'); %>
+
+</body>
+<html />
