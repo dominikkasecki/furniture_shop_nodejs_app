@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <%- include('../includes/head.ejs'); %>
+</head>
+
+<body>
+    <%- include('../includes/header.ejs'); %>
+
+    <main class="main">
+
+        <div class="main__wrapper">
+            <form class="main__form-signin" method="POST" action="/update-password">
+                <% if(error) { %>
+                <div class=" error">
+                    <h1 class="error__message"><%= error %> </h1>
+                </div>
+                <% } %>
+                <h2 class="main__form-signin-heading main__heading">Zaktualizuj hasło</h2>
+
+                <input type="password" class="main__form-control main__input" name="currentPassword"
+                    placeholder="Wpisz aktualne hasło" value="<%= input.currentPassword %>" required="" />
+
+                <input type="password" class="main__form-control main__input" name="newPassword"
+                    placeholder=" Wpisz nowe hasło" value="<%= input.newPassword %>" required="" />
+
+                <button class="btn btn-lg btn-primary btn-block main__button" type="submit">Zaktualizuj hasło</button>
+            </form>
+        </div>
+
+
+    </main>
+
+    <%- include('../includes/scripts.ejs') %>
+
+</body>
+
+</html>

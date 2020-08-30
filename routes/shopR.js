@@ -8,8 +8,16 @@ const router = express.Router();
 
 const isAuth = require('../middleware/isAuth');
 
+const rateLimit = require('express-rate-limit');
+
+const limiter = rateLimit({
+  windowMs: 15 * 60 * 1000,
+  max: 10,
+});
+
 const {
   getHomePage,
+  postSendMessage,
   getFurniturePage,
   getFurnitureDetailsPage,
   getOrdersPage,
@@ -22,6 +30,8 @@ const {
 /* -------------------------------------------------------------------------- */
 
 router.get('/', getHomePage);
+
+router.post('/send-message', limiter, postSendMessage);
 
 router.get('/meble', getFurniturePage);
 

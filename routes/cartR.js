@@ -8,6 +8,8 @@ const router = express.Router();
 
 const isAuth = require('../middleware/isAuth');
 
+const stripeCSP = require('../utils/stripeCSP');
+
 const {
   getCartFurniturePage,
   getCartAddItem,
@@ -19,10 +21,25 @@ console.log(' getCartFurniturePage:', getCartFurniturePage);
 /*                                 MIDDLEWARE                                 */
 /* -------------------------------------------------------------------------- */
 
-router.get('/karta', isAuth, getCartFurniturePage);
+router.get(
+  '/karta',
+  stripeCSP,
+  isAuth,
+  getCartFurniturePage
+);
 
-router.get('/cart/add/:id', isAuth, getCartAddItem);
+router.get(
+  '/cart/add/:id',
+  stripeCSP,
+  isAuth,
+  getCartAddItem
+);
 
-router.get('/cart/delete/:id', isAuth, getCartDeleteItem);
+router.get(
+  '/cart/delete/:id',
+  stripeCSP,
+  isAuth,
+  getCartDeleteItem
+);
 
 module.exports = router;

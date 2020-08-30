@@ -4,6 +4,8 @@ const Schema = mongoose.Schema;
 
 const bcrypt = require('bcryptjs');
 
+const crypto = require('crypto');
+
 const userSchema = new Schema({
   email: {
     type: String,
@@ -70,6 +72,17 @@ userSchema.methods.verifyPassword = async function (
   password
 ) {
   return await bcrypt.compare(password, this.password);
+};
+
+userSchema.methods.createPasswordToken = function () {
+  const token = crypto.randomBytes(20).toString('hex');
+
+  this.resetPasswordToken = crypto
+    .createHash('sha256')
+    .update(token)
+    .digest('hex');
+
+  return token;
 };
 
 module.exports = mongoose.model('User', userSchema);

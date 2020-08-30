@@ -22,7 +22,7 @@ const compression = require('compression');
 
 const bodyParser = require('body-parser');
 
-console.log(process.env);
+console.log(process.env.NODE_ENV);
 
 if (process.env.NODE_ENV === 'development') {
   const dotenv = require('dotenv');
@@ -132,8 +132,9 @@ app.use((req, res, next) => {
 
   res.setHeader(
     'Content-Security-Policy',
-    "script-src 'self' https://js.stripe.com/v3/"
+    "script-src 'self' https://kit.fontawesome.com"
   );
+
   next();
 });
 

@@ -1,0 +1,36 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <%- include('../includes/head.ejs'); %>
+</head>
+
+<body>
+    <%- include('../includes/header.ejs'); %>
+
+    <main class="main">
+
+        <div class="main__wrapper">
+            <form class="main__form-signin" method="POST" action="/reset-password/<%= id %>">
+                <% if(error) { %>
+                <div class=" error">
+                    <h1 class="error__message"><%= error %> </h1>
+                </div>
+                <% } %>
+                <h2 class="main__form-signin-heading main__heading">Zresetuj hasło</h2>
+
+                <input type="password" class="main__form-control main__input" name="password"
+                    placeholder="Wpisz tutaj nowe hasło" required="" />
+
+                <button class="btn btn-lg btn-primary btn-block main__button" type="submit">Resetuj hasło</button>
+            </form>
+        </div>
+
+
+    </main>
+
+    <%- include('../includes/scripts.ejs') %>
+
+</body>
+
+</html>

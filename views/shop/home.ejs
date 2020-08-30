@@ -169,7 +169,7 @@
 
                 <div class="row mt-5 justify-content-center" data-aos="fade-up">
                     <div class="col-lg-10">
-                        <form action="forms/contact.php" method="post" role="form" class="php-email-form">
+                        <form action="/send-message" method="POST" role="form" class="php-email-form" id="form">
                             <div class="form-row">
                                 <div class="col-md-6 form-group">
                                     <input type="text" name="name" class="form-control" id="name"
@@ -194,12 +194,9 @@
                                     data-msg="Proszę napisz coś do nas" placeholder="Wiadomość"></textarea>
                                 <div class="validate"></div>
                             </div>
-                            <div class="mb-3">
-                                <div class="loading">Ładowanie</div>
-                                <div class="error-message"></div>
-                                <div class="sent-message">Twoja wiadomość została wysłana. Dziękujemy</div>
-                            </div>
-                            <div class="text-center"><button type="submit">Wyślij wiadomość</button></div>
+
+
+                            <div class="text-center" id="btn"><button type="submit">Wyślij wiadomość</button></div>
                         </form>
                     </div>
 
@@ -210,9 +207,13 @@
 
     </main>
 
-    <!--
+    <script src="https://kit.fontawesome.com/ce8e7d3958.js" crossorigin="anonymous"></script>
 
     <%- include('../includes/scripts.ejs'); %>
+
+    <script src="/js/contact.js"></script>
+
+
 
 </body>
 

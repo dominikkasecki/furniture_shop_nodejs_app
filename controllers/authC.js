@@ -2,6 +2,20 @@
 /*                                   MODULES                                  */
 /* -------------------------------------------------------------------------- */
 
+const nodemailer = require('nodemailer');
+
+const sendGrid = require('nodemailer-sendgrid-transport');
+
+const crypto = require('crypto');
+
+const transporter = nodemailer.createTransport(
+  sendGrid({
+    auth: {
+      api_key: process.env.SENDGRID_KEY,
+    },
+  })
+);
+
 const asyncFn = require('../middleware/async');
 
 const {
@@ -72,7 +86,22 @@ exports.postSignup = asyncFn(async (req, res, next) => {
     throw { message: 'Tworzenie konta nie powiodło się' };
   }
 
-  return res.status(201).redirect('/zaloguj');
+  res.status(201).redirect('/zaloguj');
+
+  return transporter.sendMail({
+    to: email,
+    from: 'dominikus.pt@interia.pl',
+    subject: `Pomyślna rejestracja ${email}`,
+    html: `
+    <h1>Witamy ${email} w sklepie Dominik </h1>
+    <p>Jesteś naszym nowym użytkownikiem , za co serdecznie dziękujemy </p>
+    <p>W ramach nagrody dostaniesz różne zniżki cenowe !</p>
+    <p>Powrót do strony głównej ${req.protocol}://${req.get(
+      'host'
+    )}/</p>
+    <p>Pozdrawia zespół Dominik dominikus.pt@interia.pl</p>
+    `,
+  });
 });
 
 /* ---------------------------------- Login --------------------------------- */
@@ -159,6 +188,13 @@ exports.postLogin = asyncFn(async (req, res, next) => {
 // @route     GET /wyloguj
 // @access    Private
 exports.getLogout = asyncFn((req, res, next) => {
+  if (!req.session.user && !req.session.isLoggedIn) {
+    throw {
+      message:
+        'Nie można się wylogować ,jeśli się nie zalogowało',
+      statusCode: 400,
+    };
+  }
   req.session.destroy((err) => {
     if (err) {
       throw {
@@ -169,3 +205,207 @@ exports.getLogout = asyncFn((req, res, next) => {
     return res.status(200).redirect('/');
   });
 });
+
+/* ----------------------------- Update password ---------------------------- */
+
+// @desc      get user's update password page
+// @route     GET /update-password
+// @access    Public
+
+exports.getUpdatePasswordPage = asyncFn(
+  async (req, res, next) => {
+    res.render('auth/update', {
+      pageTitle: 'Zmiana hasła',
+      path: '/update-password',
+      input: {},
+      error: false,
+    });
+  }
+);
+
+// @desc      Update user's password
+// @route     POST /update-password
+// @access    Public
+
+exports.postUpdatePassword = asyncFn(
+  async (req, res, next) => {
+    const { currentPassword, newPassword } = req.body;
+
+    const user = await User.findById(req.user._id).select(
+      '+password'
+    );
+
+    if (!(await user.verifyPassword(currentPassword))) {
+      return res.render('auth/update', {
+        pageTitle: 'Zmiana hasła',
+        path: '/update-password',
+        input: {
+          currentPassword,
+          newPassword,
+        },
+        error: 'Aktualne hasło jest nieprawidłowe',
+      });
+    }
+
+    if (newPassword.length < 3) {
+      return res.render('auth/update', {
+        pageTitle: 'Zmiana hasła',
+        path: '/update-password',
+        input: {
+          currentPassword,
+          newPassword,
+        },
+        error: 'Hasło musi mieć minimalnie 3 znaki',
+      });
+    }
+
+    user.password = newPassword;
+
+    await user.save({ validateBeforeSave: true });
+
+    res.status(200).redirect('/');
+  }
+);
+
+/* ----------------------------- Reset password ----------------------------- */
+
+// @desc      find user's password to reset page
+// @route     GET /reset-password
+// @access    Public
+
+exports.getResetPasswordEmailPage = asyncFn(
+  (req, res, next) => {
+    res.render('auth/email', {
+      pageTitle: 'Reset hasła',
+      path: '/reset-password',
+      error: false,
+    });
+  }
+);
+
+// @desc      find user's password to reset
+// @route     POST /reset-password
+// @access    Public
+
+exports.postResetPasswordEmail = asyncFn(
+  async (req, res, next) => {
+    const { email } = req.body;
+
+    const user = await User.findOne({ email });
+
+    if (!user) {
+      return res.render('auth/email', {
+        pageTitle: 'Reset hasła',
+        path: '/reset-password',
+        error: 'Nie ma takiego emaila',
+      });
+    }
+
+    const { resetPasswordToken, resetTokenExpire } = user;
+
+    if (resetPasswordToken || resetTokenExpire) {
+      throw {
+        message:
+          'Już wysłałeś prośbę zresetowania hasła . Udaj się na swój email',
+        statusCode: 400,
+      };
+    }
+
+    user.resetTokenExpire = Date.now() + 3600 * 1000;
+
+    const token = user.createPasswordToken();
+
+    await user.save({ validateBeforeSave: true });
+
+    try {
+      transporter.sendMail({
+        to: user.email,
+        from: 'dominikus.pt@interia.pl',
+        subject: 'Prośba o reset hasła',
+        html: `
+        <h1>Drogi ${user.email} </h1>
+        
+        <p>, poprosiłeś nas o zmianę hasła ,więc tutaj masz odnośnik , który będzie aktywny tylko przez 1h</p>
+        <p>${req.protocol}://${req.get(
+          'host'
+        )}/reset-password/${token}</p>
+        
+        `,
+      });
+    } catch (error) {
+      user.resetPasswordToken = undefined;
+
+      user.resetTokenExpire = undefined;
+
+      await user.save();
+    }
+
+    return res.status(200).redirect('/zaloguj');
+  }
+);
+
+// @desc      get reset a user's password page
+// @route     GET /reset-password/:id
+// @access    Public
+
+exports.getResetPasswordPage = asyncFn((req, res, next) => {
+  const id = req.params.id;
+
+  res.render('auth/reset', {
+    pageTitle: 'Reset hasła',
+    path: '/reset-password',
+    id,
+    error: false,
+  });
+});
+
+// @desc      reset a user's password
+// @route     POST /reset-password/:id
+// @access    Public
+
+exports.postResetPassword = asyncFn(
+  async (req, res, next) => {
+    const { password } = req.body;
+
+    const id = req.params.id;
+
+    if (password.length < 3) {
+      return res.render('auth/reset', {
+        pageTitle: 'Reset hasła',
+        path: '/reset-password',
+        id,
+        error: 'Hasło musi mieć minimalnie 3 znaki',
+      });
+    }
+
+    const token = crypto
+      .createHash('sha256')
+      .update(id)
+      .digest('hex');
+
+    const user = await User.findOne({
+      resetTokenExpire: {
+        $gt: Date.now(),
+      },
+      resetPasswordToken: token,
+    });
+
+    if (!user) {
+      throw {
+        message:
+          'Ten użytkownik nie wysłał prośby o zmianę hasła',
+        statusCode: 400,
+      };
+    }
+
+    user.resetPasswordToken = undefined;
+
+    user.resetTokenExpire = undefined;
+
+    user.password = password;
+
+    await user.save({ validateBeforeSave: true });
+
+    res.status(200).redirect('/zaloguj');
+  }
+);

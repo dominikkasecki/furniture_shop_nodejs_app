@@ -2,6 +2,18 @@
 /*                                   MODULES                                  */
 /* -------------------------------------------------------------------------- */
 
+const nodemailer = require('nodemailer');
+
+const sendGrid = require('nodemailer-sendgrid-transport');
+
+const transporter = nodemailer.createTransport(
+  sendGrid({
+    auth: {
+      api_key: process.env.SENDGRID_KEY,
+    },
+  })
+);
+
 const asyncFn = require('../middleware/async');
 
 const Furniture = require('../models/Furniture');
@@ -24,6 +36,30 @@ exports.getHomePage = asyncFn((req, res, next) => {
     path: '/',
   });
 });
+
+// @desc      send a message
+// @route     GET /send-message
+// @access    Public
+
+exports.postSendMessage = asyncFn(
+  async (req, res, next) => {
+    const { name, email, subject, message } = req.body;
+
+    res.status(200).redirect('/meble');
+
+    return transporter.sendMail({
+      from: 'dominikus.pt@interia.pl',
+      to: 'dominikus.pt@interia.pl',
+      subject: `${name} - ${subject}`,
+      html: `
+      <h1>${subject}</h1>
+      <p> ${message}</p>
+       <h5>Wiadomość od ${name}  , z emailem ${email}</h5>
+      
+      `,
+    });
+  }
+);
 
 // @desc      get furniture page
 // @route     GET /meble

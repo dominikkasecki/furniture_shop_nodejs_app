@@ -1033,6 +1033,14 @@ section {
   background: #22d8b6;
 }
 
+.contact-title {
+  color: #22d8b6;
+}
+
+.contact-icon {
+  font-size: 2rem;
+}
+
 @-webkit-keyframes animate-loading {
   0% {
     transform: rotate(0deg);
