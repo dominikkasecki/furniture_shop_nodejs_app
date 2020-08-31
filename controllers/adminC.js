@@ -33,7 +33,9 @@ exports.getAddFurniturePage = asyncFn((req, res, next) => {
     pageTitle: 'Dodaj mebel',
     edit: false,
     error: false,
-    input: {},
+    input: {
+      errors: [],
+    },
     path: '/dodaj-mebel',
   });
 });
@@ -45,6 +47,9 @@ exports.getAddFurniturePage = asyncFn((req, res, next) => {
 exports.postAddFurniture = asyncFn(
   async (req, res, next) => {
     const errors = validationResult(req);
+    console.log(' errors:', errors.array());
+
+    console.log(req.files);
 
     const {
       name,
@@ -67,6 +72,7 @@ exports.postAddFurniture = asyncFn(
           timeOfExecution,
           price,
           description,
+          errors: errors.array(),
         },
         path: '/dodaj-mebel',
       });
@@ -86,7 +92,7 @@ exports.postAddFurniture = asyncFn(
       };
     }
 
-    return res.status(201).redirect('/meble');
+    return res.status(201).redirect('/moje-meble');
   }
 );
 
@@ -141,6 +147,7 @@ exports.getEditFurniturePage = asyncFn(
         available: available ? 'TAK' : 'NIE',
         price,
         description,
+        errors: [],
       },
       path: '/edytuj-mebel',
     });
@@ -198,6 +205,7 @@ exports.postEditFurniture = asyncFn(
           timeOfExecution,
           price,
           description,
+          errors: errors.array(),
         },
         path: '/edytuj-mebel',
       });

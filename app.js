@@ -20,9 +20,9 @@ const helmet = require('helmet');
 
 const compression = require('compression');
 
-const bodyParser = require('body-parser');
+const csrf = require('csurf');
 
-console.log(process.env.NODE_ENV);
+const bodyParser = require('body-parser');
 
 if (process.env.NODE_ENV === 'development') {
   const dotenv = require('dotenv');
@@ -52,7 +52,6 @@ const hpp = require('hpp');
 /* ----------------------------------- AWS ---------------------------------- */
 
 const bucketName = process.env.BUCKET_NAME;
-console.log('bucketName:', bucketName);
 
 const multer = require('multer');
 
@@ -111,6 +110,8 @@ app.use(express.static(path.join(__dirname, 'public')));
 
 app.use(bodyParser.urlencoded({ extended: false }));
 
+app.use(multer().array('img'));
+
 app.use(
   session({
     secret:
@@ -121,10 +122,13 @@ app.use(
   })
 );
 
-app.use(multer().array('img'));
+app.use(csrf());
 
 app.use((req, res, next) => {
   res.locals.isLoggedIn = req.session.isLoggedIn || false;
+
+  res.locals.csrfToken = req.csrfToken();
+
   res.setHeader(
     'Content-Security-Policy',
     "script-src 'self' https://s3.console.aws.amazon.com"

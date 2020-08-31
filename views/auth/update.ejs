@@ -19,13 +19,18 @@
                 <% } %>
                 <h2 class="main__form-signin-heading main__heading">Zaktualizuj hasło</h2>
 
-                <input type="password" class="main__form-control main__input" name="currentPassword"
-                    placeholder="Wpisz aktualne hasło" value="<%= input.currentPassword %>" required="" />
+                <input type="password"
+                    class="main__form-control main__input <%= input.errors.find(el => el.param === 'currentPassword')?'wrong-input':'' %>"
+                    name="currentPassword" placeholder="Wpisz aktualne hasło" value="<%= input.currentPassword %>"
+                    required="" />
 
-                <input type="password" class="main__form-control main__input" name="newPassword"
-                    placeholder=" Wpisz nowe hasło" value="<%= input.newPassword %>" required="" />
+                <input type="password"
+                    class="main__form-control main__input <%= input.errors.find(el => el.param === 'newPassword')?'wrong-input':'' %>"
+                    name="newPassword" placeholder=" Wpisz nowe hasło" value="<%= input.newPassword %>" required="" />
 
                 <button class="btn btn-lg btn-primary btn-block main__button" type="submit">Zaktualizuj hasło</button>
+
+                <input type="hidden" name="_csrf" value="<%= csrfToken %>">
             </form>
         </div>
 

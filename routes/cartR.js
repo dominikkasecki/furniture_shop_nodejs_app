@@ -16,7 +16,6 @@ const {
   getCartDeleteItem,
 } = require('../controllers/cartC');
 
-console.log(' getCartFurniturePage:', getCartFurniturePage);
 /* -------------------------------------------------------------------------- */
 /*                                 MIDDLEWARE                                 */
 /* -------------------------------------------------------------------------- */

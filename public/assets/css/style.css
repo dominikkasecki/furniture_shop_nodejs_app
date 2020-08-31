@@ -1203,3 +1203,7 @@ section {
 
   font-size: 2.7rem !important;
 }
+
+.wrong-input {
+  border: 1.5px solid red;
+}

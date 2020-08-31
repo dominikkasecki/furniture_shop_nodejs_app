@@ -19,10 +19,13 @@
                 <% } %>
                 <h2 class="main__form-signin-heading main__heading">Zresetuj hasło</h2>
 
-                <input type="password" class="main__form-control main__input" name="password"
-                    placeholder="Wpisz tutaj nowe hasło" required="" />
+                <input type="password"
+                    class="main__form-control main__input <%= input.errors.find(el => el.param === 'password')?'wrong-input':'' %>"
+                    name="password" placeholder="Wpisz tutaj nowe hasło" required="" />
 
                 <button class="btn btn-lg btn-primary btn-block main__button" type="submit">Resetuj hasło</button>
+
+                <input type="hidden" name="_csrf" value="<%= csrfToken %>">
             </form>
         </div>
 

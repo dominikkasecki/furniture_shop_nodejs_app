@@ -38,7 +38,9 @@ exports.getSignupPage = asyncFn((req, res, next) => {
     pageTitle: 'Rejestracja',
     login: false,
     error: false,
-    input: {},
+    input: {
+      errors: [],
+    },
     path: '/zarejestruj',
   });
 });
@@ -61,6 +63,7 @@ exports.postSignup = asyncFn(async (req, res, next) => {
         email,
         password,
         secondpassword,
+        errors: errors.array(),
       },
       path: '/zarejestruj',
     });
@@ -75,6 +78,10 @@ exports.postSignup = asyncFn(async (req, res, next) => {
         email,
         password,
         secondpassword,
+        errors: [
+          { param: 'password' },
+          { param: 'secondpassword' },
+        ],
       },
       path: '/zarejestruj',
     });
@@ -114,7 +121,9 @@ exports.getLoginPage = asyncFn((req, res, next) => {
     pageTitle: 'Zaloguj się',
     login: true,
     error: false,
-    input: {},
+    input: {
+      errors: [],
+    },
     path: '/zaloguj',
   });
 });
@@ -134,6 +143,7 @@ exports.postLogin = asyncFn(async (req, res, next) => {
       input: {
         email,
         password,
+        errors: errors.array(),
       },
       path: '/zaloguj',
     });
@@ -151,6 +161,7 @@ exports.postLogin = asyncFn(async (req, res, next) => {
       input: {
         email,
         password,
+        errors: [{ param: 'email' }],
       },
       path: '/zaloguj',
     });
@@ -166,6 +177,7 @@ exports.postLogin = asyncFn(async (req, res, next) => {
       input: {
         email,
         password,
+        errors: [{ param: 'password' }],
       },
       path: '/zaloguj',
     });
@@ -210,14 +222,16 @@ exports.getLogout = asyncFn((req, res, next) => {
 
 // @desc      get user's update password page
 // @route     GET /update-password
-// @access    Public
+// @access    Private
 
 exports.getUpdatePasswordPage = asyncFn(
   async (req, res, next) => {
     res.render('auth/update', {
       pageTitle: 'Zmiana hasła',
       path: '/update-password',
-      input: {},
+      input: {
+        errors: [],
+      },
       error: false,
     });
   }
@@ -242,6 +256,7 @@ exports.postUpdatePassword = asyncFn(
         input: {
           currentPassword,
           newPassword,
+          errors: [{ param: 'currentPassword' }],
         },
         error: 'Aktualne hasło jest nieprawidłowe',
       });
@@ -254,6 +269,7 @@ exports.postUpdatePassword = asyncFn(
         input: {
           currentPassword,
           newPassword,
+          errors: [{ param: 'newPassword' }],
         },
         error: 'Hasło musi mieć minimalnie 3 znaki',
       });
@@ -279,6 +295,9 @@ exports.getResetPasswordEmailPage = asyncFn(
       pageTitle: 'Reset hasła',
       path: '/reset-password',
       error: false,
+      input: {
+        errors: [],
+      },
     });
   }
 );
@@ -298,6 +317,10 @@ exports.postResetPasswordEmail = asyncFn(
         pageTitle: 'Reset hasła',
         path: '/reset-password',
         error: 'Nie ma takiego emaila',
+        input: {
+          email,
+          errors: [{ param: 'email' }],
+        },
       });
     }
 
@@ -340,7 +363,15 @@ exports.postResetPasswordEmail = asyncFn(
       await user.save();
     }
 
-    return res.status(200).redirect('/zaloguj');
+    return res.status(200).render('auth/account', {
+      pageTitle: 'Zaloguj się',
+      login: true,
+      error: 'Wiadomość została wysłana',
+      input: {
+        errors: [],
+      },
+      path: '/zaloguj',
+    });
   }
 );
 
@@ -356,6 +387,9 @@ exports.getResetPasswordPage = asyncFn((req, res, next) => {
     path: '/reset-password',
     id,
     error: false,
+    input: {
+      errors: [],
+    },
   });
 });
 
@@ -375,6 +409,9 @@ exports.postResetPassword = asyncFn(
         path: '/reset-password',
         id,
         error: 'Hasło musi mieć minimalnie 3 znaki',
+        input: {
+          errors: [{ param: 'password' }],
+        },
       });
     }
 
@@ -406,6 +443,14 @@ exports.postResetPassword = asyncFn(
 
     await user.save({ validateBeforeSave: true });
 
-    res.status(200).redirect('/zaloguj');
+    res.status(200).render('auth/account', {
+      pageTitle: 'Zaloguj się',
+      login: true,
+      error: 'Hasło zresetowano',
+      input: {
+        errors: [],
+      },
+      path: '/zaloguj',
+    });
   }
 );

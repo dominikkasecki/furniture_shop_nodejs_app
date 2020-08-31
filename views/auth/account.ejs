@@ -19,16 +19,21 @@
                 </div>
                 <% } %>
                 <h2 class="main__form-signin-heading main__heading">Zaloguj się</h2>
-                <input type="text" class="main__form-control main__input" name="email" value="<%= input.email %>"
-                    placeholder="Wpisz tutaj swój email" required="" autofocus="" />
-                <input type="password" class="main__form-control main__input" name="password"
-                    value="<%= input.password %>" placeholder="Wpisz tutaj swoje hasło" required="" />
+                <input type="text"
+                    class="main__form-control main__input <%= input.errors.find(el => el.param === 'email')?'wrong-input':'' %>"
+                    name="email" value="<%= input.email %>" placeholder="Wpisz tutaj swój email" required=""
+                    autofocus="" />
+                <input type="password"
+                    class="main__form-control main__input <%= input.errors.find(el => el.param === 'password')?'wrong-input':'' %>"
+                    name="password" value="<%= input.password %>" placeholder="Wpisz tutaj swoje hasło" required="" />
 
                 <button class="btn btn-lg btn-primary btn-block main__button" type="submit">Zaloguj się</button>
                 <div class="text-center mt-4">
                     <a href="/reset-password">Zapomniałeś hasła?</a>
 
                 </div>
+
+                <input type="hidden" name="_csrf" value="<%= csrfToken %>">
             </form>
 
 
@@ -44,15 +49,22 @@
                 </div>
                 <% } %>
                 <h2 class="main__form-signin-heading main__heading">Zarejestruj się</h2>
-                <input type="text" class="main__form-control main__input" name="email" value="<%= input.email %>"
-                    placeholder="Wpisz tutaj swój email" required="" autofocus="" />
-                <input type="password" class="main__form-control main__input" name="password"
-                    value="<%= input.password %>" placeholder="Wpisz tutaj swoje hasło" required="" />
+                <input type="text"
+                    class="main__form-control main__input <%= input.errors.find(el => el.param === 'email')?'wrong-input':'' %>"
+                    name="email" value="<%= input.email %>" placeholder="Wpisz tutaj swój email" required=""
+                    autofocus="" />
+                <input type="password"
+                    class="main__form-control main__input <%= input.errors.find(el => el.param === 'password')?'wrong-input':'' %>"
+                    name="password" value="<%= input.password %>" placeholder="Wpisz tutaj swoje hasło" required="" />
 
-                <input type="password" class="main__form-control main__input" name="secondpassword"
-                    value="<%= input.secondpassword %>" placeholder="Wpisz ponownie hasło" required="" />
+                <input type="password"
+                    class="main__form-control main__input <%= input.errors.find(el => el.param === 'secondpassword')?'wrong-input':'' %>"
+                    name="secondpassword" value="<%= input.secondpassword %>" placeholder="Wpisz ponownie hasło"
+                    required="" />
 
                 <button class="btn btn-lg btn-primary btn-block main__button" type="submit">Zarejestruj się</button>
+
+                <input type="hidden" name="_csrf" value="<%= csrfToken %>">
             </form>
         </div>
         <% } %>

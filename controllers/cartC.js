@@ -52,11 +52,13 @@ exports.getCartFurniturePage = asyncFn(
       sessionId = session.id;
     }
 
-    res.render('shop/cart', {
+    const { items, totalPrice } = req.user.cart;
+
+    return res.render('shop/cart', {
       pageTitle: 'Karta',
       path: '/karta',
-      cartItems: req.user.cart.items,
-      totalPrice: req.user.cart.totalPrice,
+      cartItems: items,
+      totalPrice: totalPrice,
       sessionId,
     });
   }
