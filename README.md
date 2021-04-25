@@ -1,4 +1,4 @@
-# shop_dominikptaszekpl_app
+# shop_dominikptaszek_app
 ## Link to online version of app https://dominikptaszekpl.herokuapp.com/
 Could take some time to load on Heroku
 
